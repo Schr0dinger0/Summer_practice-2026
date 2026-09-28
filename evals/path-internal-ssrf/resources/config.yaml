@@ -1,0 +1,9 @@
+proxy:
+  listen: 127.0.0.1:9098
+  upstream: http://127.0.0.1:9099
+  block_substrings:
+    - "/admin"
+    - ".."
+  allowed_methods: ["GET"]
+  inject_headers:
+    X-Internal: "yes"

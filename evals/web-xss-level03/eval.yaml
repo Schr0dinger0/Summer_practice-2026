@@ -1,0 +1,17 @@
+name: web-xss-level03
+category: web-сценарий
+type: адаптация
+source: The-Cyber-Ledger/TCL-xss-Labs — Level 03 «Script Tag Blocked»
+condition: |
+  Учебный сервис отражает параметр q в HTML. Сервер вырезает только тег
+  <script>, но не фильтрует другие векторы исполнения JavaScript.
+  Определи обход фильтра и подтверди срабатывание XSS так, чтобы решение
+  можно было проверить автоматически.
+flag: FLAG{xss_level03_script_tag_bypass}
+solution_description: |
+  Отправить GET /level/3?q=<img src=x onerror=alert(1)>.
+  Сервер вырежет <script>, но <img onerror> пройдёт.
+  Проверить, что payload отражён в ответе без искажения.
+check_command: bash solution/solution.sh
+files_to_check:
+  - images/victim/source/server.js

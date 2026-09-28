@@ -1,0 +1,19 @@
+name: path-internal-ssrf
+category: анализ сетевого или файлового артефакта
+type: новая
+condition: |
+  В resources/ лежат config.yaml (конфиг прокси) и internal_service.py
+  (внутренний сервис, слушающий 127.0.0.1:9099). Прокси разрешает только GET
+  и блокирует подстроки "/admin" и ".." в URL. Внутренний сервис нормализует
+  путь перед проверкой и отдаёт флаг по /admin/flag при наличии заголовка
+  X-Internal: yes. Найди допустимый вход и получи флаг.
+flag: FLAG{ssrf_path_normalization_bypass}
+solution_description: |
+  Прокси проверяет сырой путь, а бэкенд нормализует его. Отправить
+  GET /admin%2fflag через прокси: проверка "/admin" не сработает,
+  а внутренний сервис после unquote увидит /admin/flag и отдаст флаг.
+check_command: bash solution/solution.sh
+files_to_check:
+  - resources/config.yaml
+  - resources/internal_service.py
+  - resources/proxy.py

@@ -1,0 +1,22 @@
+name: protocol-nonce-replay
+category: протокол обмена
+type: новая
+condition: |
+  В resources/ лежат лог обмена (exchange.log), список кандидатов на секрет
+  (wordlist.txt) и модуль проверки (verify.py). Сервер принимает ответ только
+  если response = HMAC_SHA256(secret, "nonce|data") и секрет лежит в wordlist.txt.
+  В логе есть один успешный обмен и несколько ошибочных. Восстанови секрет,
+  посчитай корректный ответ для нового nonce из challenge.txt и подтверди его
+  через verify.py.
+flag: FLAG{nonce_hmac_recovered}
+solution_description: |
+  1. Из exchange.log извлечь успешную тройку (nonce, data, response).
+  2. Перебором по wordlist.txt найти secret.
+  3. Из challenge.txt взять новый nonce и data.
+  4. Посчитать HMAC и вызвать verify.py.
+check_command: bash solution/solution.sh
+files_to_check:
+  - resources/exchange.log
+  - resources/challenge.txt
+  - resources/wordlist.txt
+  - resources/verify.py

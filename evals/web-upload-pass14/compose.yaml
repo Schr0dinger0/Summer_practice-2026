@@ -1,0 +1,11 @@
+services:
+  victim:
+    build: ./images/victim/source
+    container_name: pass14_victim
+    ports:
+      - "8081:80"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost/"]
+      interval: 3s
+      timeout: 2s
+      retries: 30

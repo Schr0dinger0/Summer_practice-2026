@@ -1,0 +1,9 @@
+[client] HELLO
+[server] NONCE=8f3a  DATA=ping
+[client] RESPONSE=<hex-строка-из-команды-выше>
+[server] OK
+[client] HELLO
+[server] NONCE=8f3b  DATA=ping
+[client] RESPONSE=2e41ea0a3fee993b0a573d8dad0f5783809a3f5d0459201daabcbd13840e00ab
+[server] FAIL
+# response = HMAC_SHA256(secret, "nonce|data")

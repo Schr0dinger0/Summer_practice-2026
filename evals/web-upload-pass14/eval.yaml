@@ -1,0 +1,19 @@
+name: web-upload-pass14
+category: web-сценарий
+type: адаптация
+source: c0ny1/upload-labs — Pass-14
+condition: |
+  Учебный сервис принимает файлы и определяет их тип по первым двум байтам
+  содержимого (JPEG/PNG/GIF). Имя сохранённого файла генерируется сервером
+  и не зависит от имени загруженного. Определи, как загрузить «картинку-марионетку»
+  с кодом внутри, и получи содержимое скрытого файла .flag через этот код.
+flag: FLAG{upload_pass14_bypass_getimagesize}
+solution_description: |
+  Проверка типа читает только первые 2 байта (GIF-заголовок «GIF89a»).
+  Собрать polyglot: "GIF89a<?php echo file_get_contents('.flag'); ?>".
+  Загрузить через POST /index.php, извлечь URL из <img src="..."> в ответе,
+  затем GET этого URL — PHP внутри картинки выполнится и вернёт флаг.
+check_command: bash solution/solution.sh
+files_to_check:
+  - images/victim/source/index.php
+  - images/victim/source/uploads/.flag
